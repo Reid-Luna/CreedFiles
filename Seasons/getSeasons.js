@@ -66,8 +66,28 @@ const getSeason = async season => {
   });
 };
 
+const mongoose = require("mongoose");
+const Season = require("../SeasonSchema");
+
 const run = async () => {
-  for (i = 1; i < 10; i++) {
-    let episodes = await getSeason(i);
-  }
+  mongoose
+    .connect(
+      "mongodb://127.0.0.1:27017/CreedFiles",
+      { useNewUrlParser: true }
+    )
+    .then(async () => {
+      for (i = 1; i < 10; i++) {
+        let episodes = await getSeason(i);
+        new Season({
+          season: i,
+          episodes
+        })
+          .save()
+          .then(() => console.log(`saved season ${season}`))
+          .catch(e => console.log(e));
+      }
+    })
+    .catch(e => console.log(e));
 };
+
+run();
