@@ -83,7 +83,7 @@ const run = async () => {
           episodes
         })
           .save()
-          .then(() => console.log(`saved season ${season}`))
+          .then(() => console.log(`saved season ${i}`))
           .catch(e => console.log(e));
       }
     })
