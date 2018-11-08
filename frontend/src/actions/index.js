@@ -13,6 +13,7 @@ export const getRandom = () => {
           .get(`/${season}/${episode}`)
           .then(response => {
             response.data.season = season;
+            console.log(response.data);
             dispatch(getRandomSuccess(response.data));
           })
           .catch(e => console.log(e));
