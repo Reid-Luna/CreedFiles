@@ -4,7 +4,7 @@ import GRE from "../components/GetRandomEpisode";
 
 const mapStateToProps = state => {
   return {
-    episodes: state.episodes
+    episode: state.episode
   };
 };
 

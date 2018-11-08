@@ -22,7 +22,7 @@ class GRE extends Component {
   }
 
   componentDidMount() {
-    // this.props.onGetEpisode();
+    this.props.onGetEpisode();
   }
 
   onClick() {
@@ -42,11 +42,11 @@ class GRE extends Component {
               <Card>
                 <CardContent>
                   <Content>
-                    {this.props.episodes.description}
+                    {this.props.episode.description}
                     <br />
                     <small>
-                      season {this.props.episodes.season} episode{" "}
-                      {this.props.episodes.number}
+                      season {this.props.episode.season} episode{" "}
+                      {this.props.episode.number}
                     </small>
                   </Content>
                   <Button onClick={this.onClick}>another one</Button>
