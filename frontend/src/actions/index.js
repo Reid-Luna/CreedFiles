@@ -12,11 +12,7 @@ export const getRandom = () => {
         return axios
           .get(`/${season}/${episode}`)
           .then(response => {
-            console.log(response);
-            response.data = {
-              ...response.data,
-              season
-            };
+            response.data.season = season;
             dispatch(getRandomSuccess(response.data));
           })
           .catch(e => console.log(e));
