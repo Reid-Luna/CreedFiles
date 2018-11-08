@@ -17,34 +17,11 @@ import {
 class GRE extends Component {
   constructor() {
     super();
-    this.state = {
-      season: "",
-      number: "",
-      description: "",
-      title: ""
-    };
-    console.log(this.props);
     this.onClick = this.onClick.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.onGetEpisode();
-    console.log(this.props);
-    const { season, number, title, description } = this.props.episodes;
-    this.setState({ season, number, title, description });
   }
 
   onClick() {
     this.props.onGetEpisode();
-    const { season, number, title, description } = this.props.episodes;
-    this.setState({
-      season,
-      number,
-      title,
-      description
-    });
-    console.log(this.state);
   }
   render() {
     return (
@@ -60,10 +37,11 @@ class GRE extends Component {
               <Card>
                 <CardContent>
                   <Content>
-                    {this.state.description}
+                    {this.props.episodes.description}
                     <br />
                     <small>
-                      season {this.state.season} episode {this.state.number}
+                      season {this.props.episodes.season} episode{" "}
+                      {this.props.episodes.number}
                     </small>
                   </Content>
                   <Button onClick={this.onClick}>another one</Button>
