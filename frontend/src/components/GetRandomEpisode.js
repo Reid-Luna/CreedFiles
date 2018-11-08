@@ -17,7 +17,12 @@ import {
 class GRE extends Component {
   constructor() {
     super();
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.onClick = this.onClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.onGetEpisode();
   }
 
   onClick() {
