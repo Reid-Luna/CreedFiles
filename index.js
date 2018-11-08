@@ -74,7 +74,7 @@ const init = () => {
 
 mongoose
   .connect(
-    "mongodb://localhost/TheOffice",
+    "mongodb://localhost/CreedFiles",
     { useNewUrlParser: true }
   )
   .then(() => init())
