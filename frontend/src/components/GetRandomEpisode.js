@@ -22,7 +22,7 @@ class GRE extends Component {
   }
 
   componentDidMount() {
-    this.props.onGetEpisode();
+    // this.props.onGetEpisode();
   }
 
   onClick() {
