@@ -25,7 +25,7 @@ class GRE extends Component {
     };
     console.log(this.props);
     this.onClick = this.onClick.bind(this);
-    this.onComponentDidMount = this.onComponentDidMount.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   componentDidMount() {
