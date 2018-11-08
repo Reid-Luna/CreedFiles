@@ -34,7 +34,7 @@ class GRE extends Component {
       <Hero isColor="white" isFullHeight>
         <HeroHeader style={{ marginTop: "20px" }}>
           <Container hasTextAlign="centered">
-            <Title>TOREP (The Office Random Episode Picker)</Title>
+            <Title>Creed Files</Title>
           </Container>
         </HeroHeader>
         <HeroBody>
@@ -43,11 +43,11 @@ class GRE extends Component {
               <Card>
                 <CardContent>
                   <Content>
-                    {this.props.episode.description || null}
+                    {this.props.episode.description}
                     <br />
                     <small>
-                      season {this.props.episode.season || null} episode{" "}
-                      {this.props.episode.number || null}
+                      season {this.props.episode.season} episode{" "}
+                      {this.props.episode.number}
                     </small>
                   </Content>
                   <Button onClick={this.onClick}>another one</Button>
