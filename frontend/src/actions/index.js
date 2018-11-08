@@ -12,7 +12,7 @@ export const getRandom = () => {
       .then(({ data }) => {
         let episode = Math.floor(Math.random() * data.limit) + 1;
         return axios
-          .get(`${apiURL}/${season}/${episode}`)
+          .get(`/${season}/${episode}`)
           .then(response => {
             response.data.season = season;
             console.log(response.data);
@@ -40,7 +40,7 @@ export const getRandomSuccess = data => {
 export const getEpisode = (season, episode) => {
   return dispatch => {
     return axios
-      .get(`${apiURL}/${season}/${episode}`)
+      .get(`/${season}/${episode}`)
       .then(response => {
         dispatch(getEpisodeSuccess(response.data));
       })

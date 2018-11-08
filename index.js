@@ -6,6 +6,8 @@ app.use(cors());
 const Seasons = require("./SeasonSchema");
 
 const init = () => {
+  app.use(express.static(`${__dirname}/frontend/build`));
+
   app.get("/:season/limit", (req, res) => {
     const { season } = req.params;
     if (season > 9)
@@ -67,8 +69,13 @@ const init = () => {
       .catch(e => res.status(400).json({ e }));
   });
 
-  app.listen(3001, () => {
-    console.log("app running on 3001");
+  const path = require("path");
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+  });
+
+  app.listen(80, () => {
+    console.log("app running on 80");
   });
 };
 
