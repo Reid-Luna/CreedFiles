@@ -29,7 +29,7 @@ class GRE extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
+    this.props.onGetEpisode();
     const { season, number, title, description } = this.props.episodes;
     this.setState({ season, number, title, description });
   }
