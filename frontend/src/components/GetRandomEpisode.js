@@ -49,12 +49,12 @@ class GRE extends Component {
                 <CardContent>
                   <Content>
                     <Title isSize={3}>{this.props.episode.title}</Title>
-                    {this.props.episode.description}
-                    <br />
                     <small>
                       season {this.props.episode.season} episode{" "}
                       {this.props.episode.number}
                     </small>
+                    {this.props.episode.description}
+                    <br />
                   </Content>
                   <Button onClick={this.onClick}>another one</Button>
                 </CardContent>
