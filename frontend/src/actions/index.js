@@ -26,6 +26,7 @@ export const getRandom = () => {
 
 export const getRandomSuccess = data => {
   const { season, number, title, description, image } = data;
+  console.log(image);
   return {
     type: GET_RANDOM_EPISODE,
     payload: {
