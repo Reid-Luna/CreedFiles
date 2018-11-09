@@ -2,6 +2,39 @@ const cheer = require("cheerio");
 const rp = require("request-promise");
 const fs = require("fs");
 
+const getPhotos = async season => {
+  return new Promise(async resolve => {
+    let photos = {};
+    let html = await rp(
+      `https://www.imdb.com/title/tt0386676/episodes?season=${season}`
+    );
+    let $ = cheer.load(html);
+    let children = $("div.list.detail.eplist").children();
+    for (i = 0; i < children.length; i++) {
+      let parentDiv = children[i];
+      let imageDiv = $(parentDiv)
+        .children(".image")
+        .children("a")
+        .children("div.hover-over-image.zero-z-index ")
+        .children("img")[0];
+      let name = imageDiv.attribs.alt;
+      let url = imageDiv.attribs.src;
+      photos[name] = url;
+    }
+    return resolve(photos);
+    /*
+    fs.writeFile(
+      `./season${season}.json`,
+      JSON.stringify(episodes, null, 2),
+      () => {
+        console.log(`wrote season ${season}`);
+        return resolve(true);
+      }
+    );
+    */
+  });
+};
+
 const getSeason = async season => {
   return new Promise(async resolve => {
     let html = await rp(
@@ -76,16 +109,42 @@ const run = async () => {
       { useNewUrlParser: true }
     )
     .then(async () => {
+      let loopArr = [];
       for (i = 1; i < 10; i++) {
-        let episodes = await getSeason(i);
-        new Season({
-          season: i,
-          episodes
-        })
-          .save()
-          .then(() => console.log(`saved season ${i}`))
-          .catch(e => console.log(e));
+        loopArr.push(i);
       }
+      loopArr.forEach(async thing => {
+        getPhotos(thing).then(photos => {
+          getSeason(thing).then(episodes => {
+            for (episode of episodes) {
+              if (photos[episode.title]) {
+                episode.image = photos[episode.title];
+              } else if (episode.title == "Email Surveillance") {
+                episode.image =
+                  "https://m.media-amazon.com/images/M/MV5BMTQyMDQ2NTg4OF5BMl5BanBnXkFtZTgwMzY4MjU1MjE@._V1_UX200_CR0,0,200,112_AL_.jpg";
+              } else if (episode.title == "Niagara") {
+                episode.image =
+                  "https://m.media-amazon.com/images/M/MV5BZGY5YjhlOWMtYjVkYi00Njc0LTk2OTEtNTZjNTExMzI4NmM4XkEyXkFqcGdeQXVyNTM3MDMyMDQ@._V1_UX200_CR0,0,200,112_AL_.jpg";
+              } else if (episode.title == "The Manager and the Salesman") {
+                episode.image =
+                  "https://m.media-amazon.com/images/M/MV5BMTg1NDA5MDk3NF5BMl5BanBnXkFtZTgwNTczMzU1MjE@._V1_UX200_CR0,0,200,112_AL_.jpg";
+              } else if (episode.title == "The Delivery") {
+                episode.image =
+                  "https://m.media-amazon.com/images/M/MV5BMTM4MDIzOTE0NV5BMl5BanBnXkFtZTcwMDgyODIyMw@@._V1_UX200_CR0,0,200,112_AL_.jpg";
+              } else {
+                console.log(`${episode.title} does not have an image`);
+              }
+            }
+            new Season({
+              season: thing,
+              episodes
+            })
+              .save()
+              .then(() => console.log(`saved season ${thing}`))
+              .catch(e => console.log(e));
+          });
+        });
+      });
     })
     .catch(e => console.log(e));
 };

@@ -4,8 +4,9 @@ const fs = require("fs");
 
 const getSeason = async season => {
   return new Promise(async resolve => {
+    let photos = {};
     let html = await rp(
-      `https://www.imdb.com/title/tt0386676/episodes?season=${season})`
+      `https://www.imdb.com/title/tt0386676/episodes?season=${season}`
     );
     let $ = cheer.load(html);
     let children = $("div.list.detail.eplist").children();
@@ -16,9 +17,11 @@ const getSeason = async season => {
         .children("a")
         .children("div.hover-over-image.zero-z-index ")
         .children("img")[0];
-      let infoDiv = parentDiv.children[0];
-      console.log(imageDiv.attribs.alt);
+      let name = imageDiv.attribs.alt;
+      let url = imageDiv.attribs.src;
+      photos[name] = url;
     }
+    return resolve(photos);
     /*
     fs.writeFile(
       `./season${season}.json`,
@@ -38,7 +41,8 @@ const run = async () => {
     let episodes = await getSeason(i);
   }
   */
-  await getSeason(1);
+  let one = await getSeason(1);
+  console.log(one);
 };
 
 run();
