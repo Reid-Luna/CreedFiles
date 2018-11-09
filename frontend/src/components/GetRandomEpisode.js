@@ -11,7 +11,9 @@ import {
   Button,
   Card,
   CardContent,
-  Content
+  Content,
+  CardImage,
+  Image
 } from "bloomer";
 
 class GRE extends Component {
@@ -39,10 +41,14 @@ class GRE extends Component {
         </HeroHeader>
         <HeroBody>
           <Columns isCentered hasTextAlign="centered">
-            <Column>
+            <Column isSize="1/3">
               <Card>
+                <CardImage>
+                  <Image src={this.props.episode.image} />
+                </CardImage>
                 <CardContent>
                   <Content>
+                    <Title isSize={3}>{this.props.episode.title}</Title>
                     {this.props.episode.description}
                     <br />
                     <small>

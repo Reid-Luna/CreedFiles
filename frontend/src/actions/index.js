@@ -25,14 +25,15 @@ export const getRandom = () => {
 };
 
 export const getRandomSuccess = data => {
-  const { season, number, title, description } = data;
+  const { season, number, title, description, image } = data;
   return {
     type: GET_RANDOM_EPISODE,
     payload: {
       season,
       number,
       title,
-      description
+      description,
+      image
     }
   };
 };
