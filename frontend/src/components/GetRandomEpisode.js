@@ -49,10 +49,10 @@ class GRE extends Component {
                 <CardContent>
                   <Content>
                     <Title isSize={3}>{this.props.episode.title}</Title>
-                    <small>
+                    <Title isSize={5}>
                       season {this.props.episode.season} episode{" "}
                       {this.props.episode.number}
-                    </small>
+                    </Title>
                     {this.props.episode.description}
                     <br />
                   </Content>
