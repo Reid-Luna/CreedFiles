@@ -8,6 +8,32 @@ const Seasons = require("./SeasonSchema");
 const init = () => {
   app.use(express.static(`${__dirname}/frontend/build`));
 
+  const getLimit = async season => {
+    season = season ? { season } : {};
+    return new Promise((resolve, reject) => {
+      Seasons.find(season)
+        .then(sns => {
+          let count = 0;
+          sns.forEach(sn => {
+            count += sn.episodes[sn.episodes.length - 1].number;
+          });
+          console.log(count);
+          return resolve(count);
+        })
+        .catch(reject);
+    });
+  };
+
+  app.get("/total", (req, res) => {
+    getLimit()
+      .then(count => {
+        return res.status(200).json({ count });
+      })
+      .catch(e => {
+        return res.status(400).json({ e });
+      });
+  });
+
   app.get("/:season/limit", (req, res) => {
     const { season } = req.params;
     if (season > 9)
@@ -15,11 +41,9 @@ const init = () => {
         .status(400)
         .json({ error: "the office only goes to season 9 :(" });
     console.log(`finding limit for season ${season}`);
-    Seasons.find({ season })
-      .then(sn => {
-        return res
-          .status(200)
-          .json({ limit: sn[0].episodes[sn[0].episodes.length - 1].number });
+    getLimit(season)
+      .then(limit => {
+        return res.status(200).json({ limit });
       })
       .catch(e => {
         return res.status(400).json({ error: e });

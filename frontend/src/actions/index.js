@@ -1,8 +1,6 @@
-import { GET_RANDOM_EPISODE, GET_EPISODE } from "./types";
+import { GET_RANDOM_EPISODE, GET_EPISODE, GET_TOTAL } from "./types";
 
 import axios from "axios";
-
-const apiURL = "http://www.creedfiles.com:3001";
 
 export const getRandom = () => {
   return dispatch => {
@@ -57,6 +55,27 @@ export const getEpisodeSuccess = data => {
       number,
       title,
       description
+    }
+  };
+};
+
+export const getTotal = () => {
+  return dispatch => {
+    return axios
+      .get("/total")
+      .then(response => {
+        dispatch(getTotalSuccess(response.data));
+      })
+      .catch(e => console.log(e));
+  };
+};
+
+export const getTotalSuccess = data => {
+  const total = data.count;
+  return {
+    type: GET_TOTAL,
+    payload: {
+      total
     }
   };
 };

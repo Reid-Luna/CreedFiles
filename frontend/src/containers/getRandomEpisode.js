@@ -1,17 +1,21 @@
 import { connect } from "react-redux";
-import { getRandom } from "../actions";
+import { getRandom, getTotal } from "../actions";
 import GRE from "../components/GetRandomEpisode";
 
 const mapStateToProps = state => {
   return {
-    episode: state.episodes
+    episode: state.episodes,
+    total: state.total.total
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetEpisode: () => {
+    GetEpisode: () => {
       dispatch(getRandom());
+    },
+    GetTotal: () => {
+      dispatch(getTotal());
     }
   };
 };
