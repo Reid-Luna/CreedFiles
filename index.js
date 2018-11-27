@@ -8,6 +8,10 @@ const Seasons = require("./SeasonSchema");
 const init = () => {
   app.use(express.static(`${__dirname}/frontend/build`));
 
+  app.get("/.well-known/pki-validation/", (req, res) => {
+    res.sendFile(`${__dirname}/DA7AD91CFBC3405C0AE35CC8CBC6EEB6.txt`);
+  });
+
   const getLimit = async season => {
     season = season ? { season } : {};
     return new Promise((resolve, reject) => {
