@@ -18,8 +18,6 @@ const credentials = {
   ca
 };
 
-const Seasons = require("./SeasonSchema");
-
 const init = () => {
   app.use(express.static(`${__dirname}/frontend/build`));
 
