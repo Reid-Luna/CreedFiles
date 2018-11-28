@@ -104,8 +104,8 @@ class GRE extends Component {
                       {this.props.episode.description}
                       <br />
                     </Content>
-                    <Columns>
-                      <Column isSize="1/3">
+                    <Columns className="is-mobile">
+                      <Column>
                         <Button
                           style={{ borderColor: "#fff" }}
                           onMouseOver={this.onHover}
@@ -124,10 +124,10 @@ class GRE extends Component {
                           />
                         </Button>
                       </Column>
-                      <Column isSize="1/3">
+                      <Column>
                         <Button onClick={this.onClick}>another one</Button>
                       </Column>
-                      <Column isSize="1/3">
+                      <Column>
                         <Button
                           style={{ borderColor: "#fff" }}
                           onMouseOver={this.onHover}
