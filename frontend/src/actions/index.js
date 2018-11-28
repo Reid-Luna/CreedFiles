@@ -6,7 +6,7 @@ export const getRandom = () => {
   return dispatch => {
     let season = Math.floor(Math.random() * 9) + 1;
     axios
-      .get(`${season}/limit`)
+      .get(`/${season}/limit`)
       .then(({ data }) => {
         let episode = Math.floor(Math.random() * data.limit) + 1;
         return axios

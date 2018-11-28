@@ -48,7 +48,7 @@ class GRE extends Component {
   componentDidMount() {
     this.props.GetEpisode();
     this.props.GetTotal();
-    this.setState({ ...this.state, signedIn: false });
+    this.setState({ ...this.state, signedIn: true });
   }
 
   onClick() {
@@ -74,7 +74,7 @@ class GRE extends Component {
       return window.open("/login", "Login to CreedFiles");
     this.setState({
       ...this.state,
-      liked: e.target.id === "creed" ? true : false
+      liked: e.currentTarget.id === "creed" ? true : false
     });
   }
 
@@ -87,75 +87,77 @@ class GRE extends Component {
           </Container>
         </HeroHeader>
         <HeroBody>
-          <Columns isCentered hasTextAlign="centered">
-            <Column isSize="1/3">
-              <Card>
-                <CardImage>
-                  <Image src={this.props.episode.image} />
-                </CardImage>
-                <CardContent>
-                  <Content>
-                    <Title isSize={3}>{this.props.episode.title}</Title>
-                    <Title isSize={5}>
-                      season {this.props.episode.season} episode{" "}
-                      {this.props.episode.number}
-                    </Title>
-                    {this.props.episode.description}
-                    <br />
-                  </Content>
-                  <Columns>
-                    <Column isSize="1/3">
-                      <Button
-                        style={{ borderColor: "#fff" }}
-                        onMouseOver={this.onHover}
-                        id="creed"
-                        onClick={this.onDecide}
-                      >
-                        <Icon
-                          className="far fa-heart"
-                          id="loveIcon"
-                          style={{
-                            color:
-                              this.state.liked === true
-                                ? this.state.clicked.creed
-                                : null
-                          }}
-                        />
-                      </Button>
-                    </Column>
-                    <Column isSize="1/3">
-                      <Button onClick={this.onClick}>another one</Button>
-                    </Column>
-                    <Column isSize="1/3">
-                      <Button
-                        style={{ borderColor: "#fff" }}
-                        onMouseOver={this.onHover}
-                        id="deangelo"
-                        onClick={this.onDecide}
-                      >
-                        <Icon
-                          className="far fa-times-circle"
-                          id="hateIcon"
-                          style={{
-                            color:
-                              this.state.liked === false
-                                ? this.state.clicked.deangelo
-                                : null
-                          }}
-                        />
-                      </Button>
-                    </Column>
-                  </Columns>
-                </CardContent>
-              </Card>
-              <Progress
-                isSize="small"
-                value={15}
-                max={this.props.total}
-                style={{ marginTop: "10px" }}
-              />
-            </Column>
-          </Columns>
+          <Container>
+            <Columns isCentered hasTextAlign="centered">
+              <Column isSize="1/3">
+                <Card>
+                  <CardImage>
+                    <Image src={this.props.episode.image} isRatio="2:1" />
+                  </CardImage>
+                  <CardContent>
+                    <Content>
+                      <Title isSize={3}>{this.props.episode.title}</Title>
+                      <Title isSize={5}>
+                        season {this.props.episode.season} episode{" "}
+                        {this.props.episode.number}
+                      </Title>
+                      {this.props.episode.description}
+                      <br />
+                    </Content>
+                    <Columns>
+                      <Column isSize="1/3">
+                        <Button
+                          style={{ borderColor: "#fff" }}
+                          onMouseOver={this.onHover}
+                          id="creed"
+                          onClick={this.onDecide}
+                        >
+                          <Icon
+                            className="far fa-heart"
+                            id="loveIcon"
+                            style={{
+                              color:
+                                this.state.liked === true
+                                  ? this.state.clicked.creed
+                                  : null
+                            }}
+                          />
+                        </Button>
+                      </Column>
+                      <Column isSize="1/3">
+                        <Button onClick={this.onClick}>another one</Button>
+                      </Column>
+                      <Column isSize="1/3">
+                        <Button
+                          style={{ borderColor: "#fff" }}
+                          onMouseOver={this.onHover}
+                          id="deangelo"
+                          onClick={this.onDecide}
+                        >
+                          <Icon
+                            className="far fa-times-circle"
+                            id="hateIcon"
+                            style={{
+                              color:
+                                this.state.liked === false
+                                  ? this.state.clicked.deangelo
+                                  : null
+                            }}
+                          />
+                        </Button>
+                      </Column>
+                    </Columns>
+                  </CardContent>
+                </Card>
+                <Progress
+                  isSize="small"
+                  value={15}
+                  max={this.props.total}
+                  style={{ marginTop: "10px" }}
+                />
+              </Column>
+            </Columns>
+          </Container>
         </HeroBody>
       </Hero>
     );
