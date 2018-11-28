@@ -18,6 +18,8 @@ import {
   Progress
 } from "bloomer";
 
+import Header from "./Header";
+
 class GRE extends Component {
   constructor() {
     super();
@@ -30,8 +32,7 @@ class GRE extends Component {
         signedIn: {
           creed: "like this episode",
           deangelo: "dislike this episode (will not be shown again)"
-        },
-        signedOut: "sign in to use this feature"
+        }
       },
       clicked: {
         creed: "#FE9FBE",
@@ -41,14 +42,15 @@ class GRE extends Component {
         creed: "loveIcon",
         deangelo: "hateIcon"
       },
-      liked: null
+      liked: null,
+      signedIn: false
     };
   }
 
   componentDidMount() {
     this.props.GetEpisode();
     this.props.GetTotal();
-    this.setState({ ...this.state, signedIn: true });
+    this.setState({ ...this.state, signedIn: false });
   }
 
   onClick() {
@@ -81,10 +83,9 @@ class GRE extends Component {
   render() {
     return (
       <Hero isColor="white" isFullHeight>
-        <HeroHeader style={{ marginTop: "20px" }}>
-          <Container hasTextAlign="centered">
-            <Title>Creed Files</Title>
-          </Container>
+        <HeroHeader style={{ margin: "20px" }}>
+          {console.log(this.state)}
+          <Header signedIn={this.state.signedIn} />
         </HeroHeader>
         <HeroBody>
           <Container>
@@ -98,63 +99,70 @@ class GRE extends Component {
                     <Content>
                       <Title isSize={3}>{this.props.episode.title}</Title>
                       <Title isSize={5}>
-                        season {this.props.episode.season} episode{" "}
+                        Season {this.props.episode.season} Episode{" "}
                         {this.props.episode.number}
                       </Title>
                       {this.props.episode.description}
                       <br />
                     </Content>
                     <Columns className="is-mobile">
-                      <Column>
-                        <Button
-                          style={{ borderColor: "#fff" }}
-                          onMouseOver={this.onHover}
-                          id="creed"
-                          onClick={this.onDecide}
-                        >
-                          <Icon
-                            className="far fa-heart"
-                            id="loveIcon"
-                            style={{
-                              color:
-                                this.state.liked === true
-                                  ? this.state.clicked.creed
-                                  : null
-                            }}
-                          />
-                        </Button>
-                      </Column>
+                      {this.state.signedIn && (
+                        <Column>
+                          <Button
+                            style={{ borderColor: "#fff" }}
+                            onMouseOver={this.onHover}
+                            id="creed"
+                            onClick={this.onDecide}
+                          >
+                            <Icon
+                              className="far fa-heart"
+                              id="loveIcon"
+                              style={{
+                                color:
+                                  this.state.liked === true
+                                    ? this.state.clicked.creed
+                                    : null
+                              }}
+                            />
+                          </Button>
+                        </Column>
+                      )}
+
                       <Column>
                         <Button onClick={this.onClick}>another one</Button>
                       </Column>
-                      <Column>
-                        <Button
-                          style={{ borderColor: "#fff" }}
-                          onMouseOver={this.onHover}
-                          id="deangelo"
-                          onClick={this.onDecide}
-                        >
-                          <Icon
-                            className="far fa-times-circle"
-                            id="hateIcon"
-                            style={{
-                              color:
-                                this.state.liked === false
-                                  ? this.state.clicked.deangelo
-                                  : null
-                            }}
-                          />
-                        </Button>
-                      </Column>
+                      {this.state.signedIn && (
+                        <Column>
+                          <Button
+                            style={{ borderColor: "#fff" }}
+                            onMouseOver={this.onHover}
+                            id="deangelo"
+                            onClick={this.onDecide}
+                          >
+                            <Icon
+                              className="far fa-times-circle"
+                              id="hateIcon"
+                              style={{
+                                color:
+                                  this.state.liked === false
+                                    ? this.state.clicked.deangelo
+                                    : null
+                              }}
+                            />
+                          </Button>
+                        </Column>
+                      )}
                     </Columns>
                   </CardContent>
                 </Card>
-                <Progress
-                  isSize="small"
-                  value={15}
-                  max={this.props.total}
-                  style={{ marginTop: "10px" }}
-                />
+                {this.state.signedIn && (
+                  <Progress
+                    isSize="small"
+                    value={15}
+                    max={this.props.total}
+                    style={{ marginTop: "10px" }}
+                  />
+                )}
               </Column>
             </Columns>
           </Container>
