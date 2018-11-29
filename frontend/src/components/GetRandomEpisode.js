@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 
 import {
-  Hero,
   HeroBody,
-  HeroHeader,
   Container,
   Columns,
   Column,
@@ -17,8 +15,6 @@ import {
   Icon,
   Progress
 } from "bloomer";
-
-import Header from "./Header";
 
 class GRE extends Component {
   constructor() {
@@ -82,92 +78,84 @@ class GRE extends Component {
 
   render() {
     return (
-      <Hero isColor="white" isFullHeight>
-        <HeroHeader style={{ margin: "20px" }}>
-          {console.log(this.state)}
-          <Header signedIn={this.state.signedIn} />
-        </HeroHeader>
-        <HeroBody>
-          <Container>
-            <Columns isCentered hasTextAlign="centered">
-              <Column isSize="1/3">
-                <Card>
-                  <CardImage>
-                    <Image src={this.props.episode.image} isRatio="2:1" />
-                  </CardImage>
-                  <CardContent>
-                    <Content>
-                      <Title isSize={3}>{this.props.episode.title}</Title>
-                      <Title isSize={5}>
-                        Season {this.props.episode.season} Episode{" "}
-                        {this.props.episode.number}
-                      </Title>
-                      {this.props.episode.description}
-                      <br />
-                    </Content>
-                    <Columns className="is-mobile">
-                      {this.state.signedIn && (
-                        <Column>
-                          <Button
-                            style={{ borderColor: "#fff" }}
-                            onMouseOver={this.onHover}
-                            id="creed"
-                            onClick={this.onDecide}
-                          >
-                            <Icon
-                              className="far fa-heart"
-                              id="loveIcon"
-                              style={{
-                                color:
-                                  this.state.liked === true
-                                    ? this.state.clicked.creed
-                                    : null
-                              }}
-                            />
-                          </Button>
-                        </Column>
-                      )}
+      <Container>
+        <Columns isCentered hasTextAlign="centered">
+          <Column isSize="1/3">
+            <Card>
+              <CardImage>
+                <Image src={this.props.episode.image} isRatio="2:1" />
+              </CardImage>
+              <CardContent>
+                <Content>
+                  <Title isSize={3}>{this.props.episode.title}</Title>
+                  <Title isSize={5}>
+                    Season {this.props.episode.season} Episode{" "}
+                    {this.props.episode.number}
+                  </Title>
+                  {this.props.episode.description}
+                  <br />
+                </Content>
+                <Columns className="is-mobile">
+                  {this.state.signedIn && (
+                    <Column>
+                      <Button
+                        style={{ borderColor: "#fff" }}
+                        onMouseOver={this.onHover}
+                        id="creed"
+                        onClick={this.onDecide}
+                      >
+                        <Icon
+                          className="far fa-heart"
+                          id="loveIcon"
+                          style={{
+                            color:
+                              this.state.liked === true
+                                ? this.state.clicked.creed
+                                : null
+                          }}
+                        />
+                      </Button>
+                    </Column>
+                  )}
 
-                      <Column>
-                        <Button onClick={this.onClick}>another one</Button>
-                      </Column>
-                      {this.state.signedIn && (
-                        <Column>
-                          <Button
-                            style={{ borderColor: "#fff" }}
-                            onMouseOver={this.onHover}
-                            id="deangelo"
-                            onClick={this.onDecide}
-                          >
-                            <Icon
-                              className="far fa-times-circle"
-                              id="hateIcon"
-                              style={{
-                                color:
-                                  this.state.liked === false
-                                    ? this.state.clicked.deangelo
-                                    : null
-                              }}
-                            />
-                          </Button>
-                        </Column>
-                      )}
-                    </Columns>
-                  </CardContent>
-                </Card>
-                {this.state.signedIn && (
-                  <Progress
-                    isSize="small"
-                    value={15}
-                    max={this.props.total}
-                    style={{ marginTop: "10px" }}
-                  />
-                )}
-              </Column>
-            </Columns>
-          </Container>
-        </HeroBody>
-      </Hero>
+                  <Column>
+                    <Button onClick={this.onClick}>another one</Button>
+                  </Column>
+                  {this.state.signedIn && (
+                    <Column>
+                      <Button
+                        style={{ borderColor: "#fff" }}
+                        onMouseOver={this.onHover}
+                        id="deangelo"
+                        onClick={this.onDecide}
+                      >
+                        <Icon
+                          className="far fa-times-circle"
+                          id="hateIcon"
+                          style={{
+                            color:
+                              this.state.liked === false
+                                ? this.state.clicked.deangelo
+                                : null
+                          }}
+                        />
+                      </Button>
+                    </Column>
+                  )}
+                </Columns>
+              </CardContent>
+            </Card>
+            {this.state.signedIn && (
+              <Progress
+                isSize="small"
+                value={15}
+                max={this.props.total}
+                style={{ marginTop: "10px" }}
+              />
+            )}
+          </Column>
+        </Columns>
+      </Container>
     );
   }
 }

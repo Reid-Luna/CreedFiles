@@ -11,13 +11,16 @@ import {
 } from "bloomer";
 
 class Header extends Component {
-  constructor({ signedIn }) {
+  constructor() {
     super();
     this.state = {
-      active: false,
-      signedIn
+      active: false
     };
     this.onClick = this.onClick.bind(this);
+  }
+  componentDidMount() {
+    const loggedIn = this.props.IsLoggedIn();
+    this.setState({ loggedIn: loggedIn ? true : false });
   }
   componentWillReceiveProps(props) {
     this.setState({ ...props });

@@ -1,11 +1,12 @@
 import { connect } from "react-redux";
-import { getRandom, getTotal } from "../actions";
+import { getRandom, getTotal, isLoggedIn, getCurrentUser } from "../actions";
 import GRE from "../components/GetRandomEpisode";
 
 const mapStateToProps = state => {
   return {
     episode: state.episodes,
-    total: state.total.total
+    total: state.total.total,
+    user: state.user
   };
 };
 
@@ -16,6 +17,12 @@ const mapDispatchToProps = dispatch => {
     },
     GetTotal: () => {
       dispatch(getTotal());
+    },
+    IsLoggedIn: () => {
+      dispatch(isLoggedIn());
+    },
+    CurrentUser: () => {
+      dispatch(getCurrentUser());
     }
   };
 };

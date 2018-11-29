@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Seasons = require("../SeasonSchema");
+const Seasons = require("../models/SeasonSchema");
 
 const getLimit = async season => {
   season = season ? { season } : {};
