@@ -168,10 +168,17 @@ export const loginSuccess = data => {
 };
 
 export const loginError = data => {
-  const { errors } = data;
+  let payload;
+  if (data.errors) {
+    payload = { errors: data.errors };
+  } else if (data.error) {
+    payload = { error: data.error };
+  } else {
+    payload = { data };
+  }
   return {
     type: LOGIN,
-    payload: { errors }
+    payload
   };
 };
 
