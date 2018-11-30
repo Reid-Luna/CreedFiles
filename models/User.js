@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+const episodeId = {
+  type: String,
+  required: true
+};
+
 const UserModel = new mongoose.Schema({
   username: {
     type: String,
@@ -14,24 +19,10 @@ const UserModel = new mongoose.Schema({
     required: true
   },
   likedEpisodes: {
-    type: [
-      {
-        episodeId: {
-          type: mongoose.Types.ObjectId,
-          required: true
-        }
-      }
-    ]
+    type: [episodeId]
   },
   dislikedEpisodes: {
-    type: [
-      {
-        episodeId: {
-          type: mongoose.Types.ObjectId,
-          required: true
-        }
-      }
-    ]
+    type: [episodeId]
   },
   totalSorted: {
     type: Number,

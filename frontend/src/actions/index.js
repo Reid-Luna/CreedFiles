@@ -9,47 +9,62 @@ import {
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-export const getRandom = () => {
-  return dispatch => {
+export const randomEpisode = () => {
+  return new Promise(resolve => {
     let season = Math.floor(Math.random() * 9) + 1;
     axios
       .get(`/api/${season}/limit`)
       .then(({ data }) => {
         let episode = Math.floor(Math.random() * data.limit) + 1;
-        return axios
-          .get(`/api/${season}/${episode}`)
-          .then(response => {
-            response.data.season = season;
-            dispatch(getRandomSuccess(response.data));
-          })
-          .catch(e => console.log(e));
+        return resolve({ season, episode });
       })
       .catch(e => console.log(e));
-  };
+  });
+};
+
+export const getRandomForUser = user => dispatch => {
+  randomEpisode().then(({ season, episode }) => {
+    return axios
+      .get(`/api/id`)
+      .then(response => {
+        const { ids } = response.data;
+        user.dislikedEpisodes.forEach(id => {
+          ids.splice(ids.indexOf(id), 1);
+        });
+        let random = ids[Math.floor(Math.random() * (ids.length - 1)) + 1];
+        return axios.get(`/api/id/${random}`).then(response => {
+          dispatch(getRandomSuccess(response.data));
+        });
+      })
+      .catch(e => console.log(e));
+  });
+};
+
+export const getRandom = () => dispatch => {
+  randomEpisode().then(({ season, episode }) => {
+    return axios
+      .get(`/api/${season}/${episode}`)
+      .then(response => {
+        response.data.season = season;
+        dispatch(getRandomSuccess(response.data));
+      })
+      .catch(e => console.log(e));
+  });
 };
 
 export const getRandomSuccess = data => {
-  const { season, number, title, description, image } = data;
+  const { _id: id, season, number, title, description, image } = data;
+  console.log(data);
   return {
     type: GET_RANDOM_EPISODE,
     payload: {
+      id,
       season,
       number,
       title,
       description,
       image
     }
-  };
-};
-
-export const getEpisode = (season, episode) => {
-  return dispatch => {
-    return axios
-      .get(`/api/${season}/${episode}`)
-      .then(response => {
-        dispatch(getEpisodeSuccess(response.data));
-      })
-      .catch(e => console.log(e));
   };
 };
 
@@ -138,6 +153,28 @@ export const logout = () => dispatch => {
   setAuthToken(false);
 
   dispatch(setCurrentUser({}));
+};
+
+export const likeEpisode = id => dispatch => {
+  return axios
+    .get(`/users/like/${id}`)
+    .then(res => {
+      return dispatch(setCurrentUser(res.data));
+    })
+    .catch(e => {
+      dispatch(gotErrors(e.response.data));
+    });
+};
+
+export const dislikeEpisode = id => dispatch => {
+  return axios
+    .get(`/users/dislike/${id}`)
+    .then(res => {
+      return dispatch(setCurrentUser(res.data));
+    })
+    .catch(e => {
+      dispatch(gotErrors(e.response.data));
+    });
 };
 
 export const setCurrentUser = user => {

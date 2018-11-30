@@ -1,5 +1,11 @@
 import { connect } from "react-redux";
-import { getRandom, getTotal } from "../actions";
+import {
+  getRandom,
+  getTotal,
+  getRandomForUser,
+  likeEpisode,
+  dislikeEpisode
+} from "../actions";
 import GRE from "../components/GetRandomEpisode";
 
 const mapStateToProps = state => {
@@ -18,6 +24,15 @@ const mapDispatchToProps = dispatch => {
     },
     GetTotal: () => {
       dispatch(getTotal());
+    },
+    GetRandomForUser: user => {
+      dispatch(getRandomForUser(user));
+    },
+    LikeEpisode: id => {
+      dispatch(likeEpisode(id));
+    },
+    DislikeEpisode: id => {
+      dispatch(dislikeEpisode(id));
     }
   };
 };

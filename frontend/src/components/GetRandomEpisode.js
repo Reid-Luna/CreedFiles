@@ -36,34 +36,50 @@ class GRE extends Component {
   }
 
   componentDidMount() {
-    this.props.GetEpisode();
-    this.props.GetTotal();
     if (this.props.auth.isAuthenticated !== null) {
       this.setState({ authenticated: this.props.auth.isAuthenticated });
     }
+    if (this.state.authenticated) {
+      this.props.GetRandomForUser(this.props.auth.user);
+    } else {
+      this.props.GetEpisode();
+    }
+    this.props.GetTotal();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated !== null) {
       this.setState({ authenticated: nextProps.auth.isAuthenticated });
     }
+    if (this.state.authenticated) {
+      if (
+        this.props.auth.user.likedEpisodes.indexOf(nextProps.episode.id) > -1
+      ) {
+        this.setState({ liked: true });
+      }
+    }
   }
 
   onClick() {
-    if (this.state.liked !== null) {
-      console.log(
-        `remembering to ${this.state.liked ? "like" : "hate"} this episode`
-      );
+    if (this.state.liked !== null && this.state.authenticated) {
+      if (this.state.liked) {
+        this.props.LikeEpisode(this.props.episode.id);
+      } else {
+        this.props.DislikeEpisode(this.props.episode.id);
+      }
     }
-    this.setState({ ...this.state, liked: null });
-    this.props.GetEpisode();
+    this.setState({ liked: null });
+    if (this.state.authenticated) {
+      this.props.GetRandomForUser(this.props.auth.user);
+    } else {
+      this.props.GetEpisode();
+    }
   }
 
   onDecide(e) {
-    if (!this.state.signedIn)
+    if (!this.state.authenticated)
       return window.open("/login", "Login to CreedFiles");
     this.setState({
-      ...this.state,
       liked: e.currentTarget.id === "creed" ? true : false
     });
   }

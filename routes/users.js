@@ -90,16 +90,70 @@ router.post("/login", async (req, res) => {
 });
 
 router.delete(
-  "/remove/:id",
+  "/remove",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const id = req.params.id;
+    const id = req.user.id;
     Users.findByIdAndDelete(id)
       .then(user => {
         if (user) return res.status(200).json(user);
         return res
           .status(400)
           .json({ errors: { username: ["user does not exist"] } });
+      })
+      .catch(errors => res.status(400).json({ errors }));
+  }
+);
+
+router.get(
+  "/like/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { id } = req.params;
+    Users.findById(req.user.id)
+      .then(user => {
+        if (user.likedEpisodes.indexOf(id) === -1) {
+          if (user.dislikedEpisodes.indexOf(id) > -1) {
+            user.dislikedEpisodes.splice(user.dislikedEpisodes.indexOf(id), 1);
+          }
+          user.likedEpisodes.push(id);
+          user.totalSorted =
+            user.likedEpisodes.length + user.dislikedEpisodes.length;
+          newUser = new Users(user);
+          newUser
+            .save()
+            .then(user => res.status(200).json(user))
+            .catch(errors => res.status(400).json(errors));
+        } else {
+          return res.status(200).json(user);
+        }
+      })
+      .catch(errors => res.status(400).json({ errors }));
+  }
+);
+
+router.get(
+  "/dislike/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { id } = req.params;
+    Users.findById(req.user.id)
+      .then(user => {
+        if (user.dislikedEpisodes.indexOf(id) === -1) {
+          if (user.likedEpisodes.indexOf(id) > -1) {
+            user.likedEpisodes.splice(user.dislikedEpisodes.indexOf(id), 1);
+          }
+          user.dislikedEpisodes.push(id);
+          user.totalSorted =
+            user.likedEpisodes.length + user.dislikedEpisodes.length;
+          newUser = new Users(user);
+          newUser
+            .save()
+            .then(user => res.status(200).json(user))
+            .catch(errors => res.status(400).json(errors));
+        } else {
+          return res.status(200).json(user);
+        }
       })
       .catch(errors => res.status(400).json({ errors }));
   }

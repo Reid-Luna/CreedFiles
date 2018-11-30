@@ -27,6 +27,37 @@ router.get("/total", (req, res) => {
     });
 });
 
+router.get("/id", (req, res) => {
+  Seasons.find({})
+    .then(seasons => {
+      let ids = [];
+      seasons.forEach(season => {
+        season.episodes.forEach(e => {
+          ids.push(e._id);
+        });
+      });
+      res.status(200).json({ ids });
+    })
+    .catch(e => console.log(e));
+});
+
+router.get("/id/:id", (req, res) => {
+  const { id } = req.params;
+  Seasons.find({})
+    .then(seasons => {
+      seasons.forEach(season => {
+        season.episodes.forEach(episode => {
+          if (episode._id == id) {
+            episode = episode.toJSON();
+            episode.season = season.season;
+            return res.status(200).json(episode);
+          }
+        });
+      });
+    })
+    .catch(e => console.log(e));
+});
+
 router.get("/:season/limit", (req, res) => {
   const { season } = req.params;
   if (season > 9)
