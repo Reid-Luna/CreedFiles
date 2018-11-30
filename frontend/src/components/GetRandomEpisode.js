@@ -97,7 +97,6 @@ class GRE extends Component {
     return (
       <Container>
         <Columns isCentered hasTextAlign="centered">
-          {console.log(this.state)}
           {this.state.loaded ? (
             <Column isSize="1/3">
               <Card>
