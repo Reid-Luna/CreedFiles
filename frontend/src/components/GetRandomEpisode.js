@@ -15,6 +15,8 @@ import {
   Progress
 } from "bloomer";
 
+import loading from "./loading.svg";
+
 class GRE extends Component {
   constructor() {
     super();
@@ -31,7 +33,8 @@ class GRE extends Component {
         deangelo: "hateIcon"
       },
       liked: null,
-      authenticated: false
+      authenticated: false,
+      loaded: false
     };
   }
 
@@ -44,12 +47,18 @@ class GRE extends Component {
     } else {
       this.props.GetEpisode();
     }
+    if (this.props.episode.length !== 0) {
+      this.setState({ loaded: true });
+    }
     this.props.GetTotal();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated !== null) {
       this.setState({ authenticated: nextProps.auth.isAuthenticated });
+    }
+    if (nextProps.episode.length !== 0) {
+      this.setState({ loaded: true });
     }
     if (this.state.authenticated) {
       if (
@@ -88,80 +97,87 @@ class GRE extends Component {
     return (
       <Container>
         <Columns isCentered hasTextAlign="centered">
-          <Column isSize="1/3">
-            <Card>
-              <CardImage>
-                <Image src={this.props.episode.image} isRatio="2:1" />
-              </CardImage>
-              <CardContent>
-                <Content>
-                  <Title isSize={3}>{this.props.episode.title}</Title>
-                  <Title isSize={5}>
-                    Season {this.props.episode.season} Episode{" "}
-                    {this.props.episode.number}
-                  </Title>
-                  {this.props.episode.description}
-                  <br />
-                </Content>
-                <Columns className="is-mobile">
-                  {this.state.authenticated && (
-                    <Column>
-                      <Button
-                        style={{ borderColor: "#fff" }}
-                        id="creed"
-                        onClick={this.onDecide}
-                        title="like this episode"
-                      >
-                        <Icon
-                          className="far fa-heart"
-                          id="loveIcon"
-                          style={{
-                            color:
-                              this.state.liked === true
-                                ? this.state.clicked.creed
-                                : null
-                          }}
-                        />
-                      </Button>
-                    </Column>
-                  )}
+          {console.log(this.state)}
+          {this.state.loaded ? (
+            <Column isSize="1/3">
+              <Card>
+                <CardImage>
+                  <Image src={this.props.episode.image} isRatio="2:1" />
+                </CardImage>
+                <CardContent>
+                  <Content>
+                    <Title isSize={3}>{this.props.episode.title}</Title>
+                    <Title isSize={5}>
+                      Season {this.props.episode.season} Episode{" "}
+                      {this.props.episode.number}
+                    </Title>
+                    {this.props.episode.description}
+                    <br />
+                  </Content>
+                  <Columns className="is-mobile">
+                    {this.state.authenticated && (
+                      <Column>
+                        <Button
+                          style={{ borderColor: "#fff" }}
+                          id="creed"
+                          onClick={this.onDecide}
+                          title="like this episode"
+                        >
+                          <Icon
+                            className="far fa-heart"
+                            id="loveIcon"
+                            style={{
+                              color:
+                                this.state.liked === true
+                                  ? this.state.clicked.creed
+                                  : null
+                            }}
+                          />
+                        </Button>
+                      </Column>
+                    )}
 
-                  <Column>
-                    <Button onClick={this.onClick}>another one</Button>
-                  </Column>
-                  {this.state.authenticated && (
                     <Column>
-                      <Button
-                        style={{ borderColor: "#fff" }}
-                        id="deangelo"
-                        onClick={this.onDecide}
-                        title="dislike this episode"
-                      >
-                        <Icon
-                          className="far fa-times-circle"
-                          id="hateIcon"
-                          style={{
-                            color:
-                              this.state.liked === false
-                                ? this.state.clicked.deangelo
-                                : null
-                          }}
-                        />
-                      </Button>
+                      <Button onClick={this.onClick}>another one</Button>
                     </Column>
-                  )}
-                </Columns>
-              </CardContent>
-            </Card>
-            {this.state.authenticated && (
-              <Progress
-                isSize="small"
-                value={this.props.user.totalSorted}
-                max={this.props.total}
-                style={{ marginTop: "10px" }}
-              />
-            )}
-          </Column>
+                    {this.state.authenticated && (
+                      <Column>
+                        <Button
+                          style={{ borderColor: "#fff" }}
+                          id="deangelo"
+                          onClick={this.onDecide}
+                          title="dislike this episode"
+                        >
+                          <Icon
+                            className="far fa-times-circle"
+                            id="hateIcon"
+                            style={{
+                              color:
+                                this.state.liked === false
+                                  ? this.state.clicked.deangelo
+                                  : null
+                            }}
+                          />
+                        </Button>
+                      </Column>
+                    )}
+                  </Columns>
+                </CardContent>
+              </Card>
+              {this.state.authenticated && (
+                <Progress
+                  isSize="small"
+                  value={this.props.user.totalSorted}
+                  max={this.props.total}
+                  style={{ marginTop: "10px" }}
+                />
+              )}
+            </Column>
+          ) : (
+            <Column isSize="1/3">
+              <Image src={loading} isRatio="1:1" />
+            </Column>
+          )}
         </Columns>
       </Container>
     );
@@ -169,3 +185,7 @@ class GRE extends Component {
 }
 
 export default GRE;
+
+/*
+
+            */
