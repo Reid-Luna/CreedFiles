@@ -140,7 +140,7 @@ class GRE extends Component {
             {this.state.authenticated && (
               <Progress
                 isSize="small"
-                value={15}
+                value={this.props.user.totalSorted}
                 max={this.props.total}
                 style={{ marginTop: "10px" }}
               />
