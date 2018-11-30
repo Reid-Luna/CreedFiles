@@ -14,16 +14,28 @@ class Header extends Component {
   constructor() {
     super();
     this.state = {
-      active: false
+      active: false,
+      authenticated: false
     };
     this.onClick = this.onClick.bind(this);
+    this.Logout = this.Logout.bind(this);
+    this.ChangePage = this.ChangePage.bind(this);
+  }
+  ChangePage(e) {
+    this.props.history.push(e.target.href);
+  }
+  Logout() {
+    this.props.Logout();
   }
   componentDidMount() {
-    const loggedIn = this.props.IsLoggedIn();
-    this.setState({ loggedIn: loggedIn ? true : false });
+    if (this.props.auth.isAuthenticated !== null) {
+      this.setState({ authenticated: this.props.auth.isAuthenticated });
+    }
   }
-  componentWillReceiveProps(props) {
-    this.setState({ ...props });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated !== null) {
+      this.setState({ authenticated: nextProps.auth.isAuthenticated });
+    }
   }
   onClick() {
     this.setState({ active: !this.state.active });
@@ -34,7 +46,9 @@ class Header extends Component {
         <NavbarBrand>
           <NavbarItem>
             <Title isSize={3}>
-              <a href="/">Creed Files</a>
+              <a href="/" onClick={this.ChangePage}>
+                Creed Files
+              </a>
             </Title>
           </NavbarItem>
           <NavbarBurger isActive={this.state.active} onClick={this.onClick} />
@@ -42,13 +56,18 @@ class Header extends Component {
         <NavbarMenu isActive={this.state.active}>
           <NavbarEnd>
             <NavbarItem>
-              {console.log(this.state.signedIn)}
-              {this.state.signedIn ? (
-                <a href="/logout">Logout</a>
+              {this.state.authenticated ? (
+                <a onClick={this.Logout}>Logout</a>
               ) : (
                 <div>
-                  <a href="/login">Login </a> /{" "}
-                  <a href="/register"> Register</a>
+                  <a href="/login" onClick={this.ChangePage}>
+                    Login{" "}
+                  </a>{" "}
+                  /{" "}
+                  <a href="/register" onClick={this.ChangePage}>
+                    {" "}
+                    Register
+                  </a>
                 </div>
               )}
             </NavbarItem>

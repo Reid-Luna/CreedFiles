@@ -1,16 +1,23 @@
 import { connect } from "react-redux";
-import { isLoggedIn } from "../actions";
+import { logout } from "../actions";
 import Header from "../components/Header";
+import { withRouter } from "react-router";
+
+const mapStateToProps = state => {
+  return {
+    auth: state.auth
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    IsLoggedIn: () => {
-      dispatch(isLoggedIn());
+    Logout: () => {
+      dispatch(logout());
     }
   };
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
-)(Header);
+)(withRouter(Header));

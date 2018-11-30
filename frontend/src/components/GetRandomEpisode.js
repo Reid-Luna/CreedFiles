@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import {
-  HeroBody,
   Container,
   Columns,
   Column,
@@ -21,15 +20,8 @@ class GRE extends Component {
     super();
     this.componentDidMount = this.componentDidMount.bind(this);
     this.onClick = this.onClick.bind(this);
-    this.onHover = this.onHover.bind(this);
     this.onDecide = this.onDecide.bind(this);
     this.state = {
-      hover: {
-        signedIn: {
-          creed: "like this episode",
-          deangelo: "dislike this episode (will not be shown again)"
-        }
-      },
       clicked: {
         creed: "#FE9FBE",
         deangelo: "#FF2400"
@@ -39,14 +31,22 @@ class GRE extends Component {
         deangelo: "hateIcon"
       },
       liked: null,
-      signedIn: false
+      authenticated: false
     };
   }
 
   componentDidMount() {
     this.props.GetEpisode();
     this.props.GetTotal();
-    this.setState({ ...this.state, signedIn: false });
+    if (this.props.auth.isAuthenticated !== null) {
+      this.setState({ authenticated: this.props.auth.isAuthenticated });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated !== null) {
+      this.setState({ authenticated: nextProps.auth.isAuthenticated });
+    }
   }
 
   onClick() {
@@ -57,14 +57,6 @@ class GRE extends Component {
     }
     this.setState({ ...this.state, liked: null });
     this.props.GetEpisode();
-  }
-
-  onHover(e) {
-    const action = e.target.id;
-    const title = this.state.signedIn
-      ? this.state.hover.signedIn[action]
-      : this.state.hover.signedOut;
-    e.target.title = title;
   }
 
   onDecide(e) {
@@ -96,13 +88,13 @@ class GRE extends Component {
                   <br />
                 </Content>
                 <Columns className="is-mobile">
-                  {this.state.signedIn && (
+                  {this.state.authenticated && (
                     <Column>
                       <Button
                         style={{ borderColor: "#fff" }}
-                        onMouseOver={this.onHover}
                         id="creed"
                         onClick={this.onDecide}
+                        title="like this episode"
                       >
                         <Icon
                           className="far fa-heart"
@@ -121,13 +113,13 @@ class GRE extends Component {
                   <Column>
                     <Button onClick={this.onClick}>another one</Button>
                   </Column>
-                  {this.state.signedIn && (
+                  {this.state.authenticated && (
                     <Column>
                       <Button
                         style={{ borderColor: "#fff" }}
-                        onMouseOver={this.onHover}
                         id="deangelo"
                         onClick={this.onDecide}
+                        title="dislike this episode"
                       >
                         <Icon
                           className="far fa-times-circle"
@@ -145,7 +137,7 @@ class GRE extends Component {
                 </Columns>
               </CardContent>
             </Card>
-            {this.state.signedIn && (
+            {this.state.authenticated && (
               <Progress
                 isSize="small"
                 value={15}

@@ -35,7 +35,7 @@ const UserModel = new mongoose.Schema({
   },
   totalSorted: {
     type: Number,
-    required: false
+    default: 0
   }
 });
 

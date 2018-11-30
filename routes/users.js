@@ -27,7 +27,7 @@ router.post("/new", async (req, res) => {
         newUser
           .save()
           .then(user => res.status(200).json(user))
-          .catch(error => res.status(400).json({ error }));
+          .catch(errors => res.status(400).json({ errors }));
       });
     });
   }
@@ -75,11 +75,15 @@ router.post("/login", async (req, res) => {
               }
             );
           } else {
-            return res.status(400).json({ error: "password incorrect" });
+            return res
+              .status(400)
+              .json({ errors: { password: ["password incorrect"] } });
           }
         });
       } else {
-        return res.status(400).json({ error: "user does not exist" });
+        return res
+          .status(400)
+          .json({ errors: { username: ["user does not exist"] } });
       }
     });
   }
@@ -93,9 +97,11 @@ router.delete(
     Users.findByIdAndDelete(id)
       .then(user => {
         if (user) return res.status(200).json(user);
-        return res.status(400).json({ error: "user does not exist" });
+        return res
+          .status(400)
+          .json({ errors: { username: ["user does not exist"] } });
       })
-      .catch(error => res.status(400).json({ error }));
+      .catch(errors => res.status(400).json({ errors }));
   }
 );
 

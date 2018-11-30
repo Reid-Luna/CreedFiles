@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bloomer": "^0.6.5",
+    "jwt-decode": "^2.2.0",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-redux": "^5.1.0",
@@ -29,5 +30,6 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "proxy": "https://localhost/",
   "homepage": "http://www.creedfiles.com/"
 }

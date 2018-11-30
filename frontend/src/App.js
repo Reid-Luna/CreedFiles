@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import GetRandomEpisode from "./containers/getRandomEpisode";
 import Header from "./containers/header";
 import Login from "./containers/login";
+import Register from "./containers/register";
+
 import { Switch, Route } from "react-router-dom";
 import { Hero, HeroHeader, HeroBody } from "bloomer";
 
@@ -17,7 +19,8 @@ class App extends Component {
           <HeroBody>
             <Switch>
               <Route exact path="/login" component={Login} />
-              <GetRandomEpisode />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/" component={GetRandomEpisode} />
             </Switch>
           </HeroBody>
         </Hero>

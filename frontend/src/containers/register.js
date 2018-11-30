@@ -1,9 +1,10 @@
 import { connect } from "react-redux";
-import { login } from "../actions";
-import Login from "../components/Login";
+import { register } from "../actions";
+import Register from "../components/Register";
 
 const mapStateToProps = state => {
   return {
+    status: state.register,
     auth: state.auth,
     errors: state.errors
   };
@@ -11,8 +12,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    Login: (username, password) => {
-      dispatch(login(username, password));
+    Register: (username, email, password) => {
+      dispatch(register(username, email, password));
     }
   };
 };
@@ -20,4 +21,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login);
+)(Register);
