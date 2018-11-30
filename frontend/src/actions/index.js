@@ -8,6 +8,7 @@ import {
 
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { RichEmbed } from "discord.js";
 
 export const randomEpisode = () => {
   return new Promise(resolve => {
@@ -112,7 +113,24 @@ export const register = (username, email, password) => {
   return dispatch => {
     return axios
       .post("/users/new", { username, email, password })
-      .then(res => (window.location.href = "/login"))
+      .then(res => {
+        let embed = new RichEmbed();
+        embed.setTitle("New User!");
+        embed.addField("username", username);
+        embed.addField("email", email);
+        axios
+          .post(
+            "https://discordapp.com/api/webhooks/517965133109002250/8qXJYA-R68lUDHhdaFUbUhHEOONBhFqJD4N8yHl07zUCCkG5xHf6SKeusgB2xH3N61j1",
+            { embeds: [embed] }
+          )
+          .then(res => {
+            window.location.href = "/login";
+          })
+          .catch(error => {
+            console.log(error);
+            window.location.href = "/login";
+          });
+      })
       .catch(error => {
         dispatch(gotErrors(error.response.data));
       });

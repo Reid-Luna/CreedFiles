@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bloomer": "^0.6.5",
+    "discord.js": "^11.4.2",
     "jwt-decode": "^2.2.0",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
