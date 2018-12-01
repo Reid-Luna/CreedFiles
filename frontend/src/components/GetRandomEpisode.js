@@ -23,6 +23,7 @@ class GRE extends Component {
     this.componentDidMount = this.componentDidMount.bind(this);
     this.onClick = this.onClick.bind(this);
     this.onDecide = this.onDecide.bind(this);
+    this.expand = this.expand.bind(this);
     this.state = {
       clicked: {
         creed: "#FE9FBE",
@@ -34,7 +35,9 @@ class GRE extends Component {
       },
       liked: null,
       authenticated: false,
-      loaded: false
+      loaded: false,
+      titleExpand: false,
+      descExpand: false
     };
   }
 
@@ -93,6 +96,16 @@ class GRE extends Component {
     });
   }
 
+  expand(e) {
+    if (e.target.id === "desc") {
+      console.log(this.state.descExpand);
+      this.setState({ descExpand: !this.state.descExpand });
+    } else {
+      this.setState({ titleExpand: !this.state.titleExpand });
+    }
+    console.log(this.state);
+  }
+
   render() {
     return (
       <Container>
@@ -105,12 +118,59 @@ class GRE extends Component {
                 </CardImage>
                 <CardContent>
                   <Content>
-                    <Title isSize={3}>{this.props.episode.title}</Title>
+                    <Title isSize={3}>
+                      {this.props.episode.title.split("").length <= 16 && (
+                        <Title isSize={3}>{this.props.episode.title}</Title>
+                      )}
+                      {!this.state.titleExpand &&
+                        this.props.episode.title.split("").length > 16 && (
+                          <Title isSize={3}>
+                            {this.props.episode.title.substring(0, 11)}
+                            <a id="title" onClick={this.expand}>
+                              [...]
+                            </a>
+                          </Title>
+                        )}
+                      {this.state.titleExpand &&
+                        this.props.episode.title.split("").length > 16 && (
+                          <Title isSize={3}>
+                            {this.props.episode.title}{" "}
+                            <a id="title" onClick={this.expand}>
+                              [...]
+                            </a>
+                          </Title>
+                        )}
+                    </Title>
                     <Title isSize={5}>
                       Season {this.props.episode.season} Episode{" "}
                       {this.props.episode.number}
                     </Title>
-                    {this.props.episode.description}
+                    {this.props.episode.description.split("").length <= 250 && (
+                      <p>
+                        {this.props.episode.description +
+                          " ".repeat(
+                            250 -
+                              this.props.episode.description.split("").length
+                          )}
+                      </p>
+                    )}
+                    {!this.state.descExpand &&
+                      this.props.episode.description.split("").length > 250 && (
+                        <p>
+                          {this.props.episode.description.substring(0, 245)}
+                          <a id="desc" onClick={this.expand}>
+                            [...]
+                          </a>
+                        </p>
+                      )}
+                    {this.state.descExpand && (
+                      <p>
+                        {this.props.episode.description}{" "}
+                        <a id="desc" onClick={this.expand}>
+                          [...]
+                        </a>
+                      </p>
+                    )}
                     <br />
                   </Content>
                   <Columns className="is-mobile">
@@ -184,7 +244,3 @@ class GRE extends Component {
 }
 
 export default GRE;
-
-/*
-
-            */
