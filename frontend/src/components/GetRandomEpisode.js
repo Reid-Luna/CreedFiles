@@ -61,7 +61,7 @@ class GRE extends Component {
       this.setState({ authenticated: nextProps.auth.isAuthenticated });
     }
     if (nextProps.episode.length !== 0) {
-      this.setState({ loaded: true });
+      this.setState({ loaded: true, titleExpand: false, descExpand: false });
     }
     if (this.state.authenticated) {
       if (
@@ -86,6 +86,7 @@ class GRE extends Component {
     } else {
       this.props.GetEpisode();
     }
+    this.setState({ titleExpand: false, descExpand: false });
   }
 
   onDecide(e) {
@@ -103,7 +104,6 @@ class GRE extends Component {
     } else {
       this.setState({ titleExpand: !this.state.titleExpand });
     }
-    console.log(this.state);
   }
 
   render() {
