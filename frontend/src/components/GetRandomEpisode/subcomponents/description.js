@@ -19,11 +19,8 @@ class Description extends Component {
     if (this.state.length <= 100) {
       return (
         <p>
-          {this.state.description}
-          <a style={{ color: "#fff" }}>
-            {" "}
-            {"#".repeat(100 - this.state.length)}
-          </a>
+          {this.state.description}{" "}
+          <a style={{ color: "#fff" }}>{"#".repeat(100 - this.state.length)}</a>
         </p>
       );
     } else if (!this.state.expand && this.state.length > 100) {
