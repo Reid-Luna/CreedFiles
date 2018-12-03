@@ -33,9 +33,28 @@ export const getRandomForUser = user => dispatch => {
           ids.splice(ids.indexOf(id), 1);
         });
         let random = ids[Math.floor(Math.random() * (ids.length - 1)) + 1];
-        return axios.get(`/api/id/${random}`).then(response => {
-          dispatch(getRandomSuccess(response.data));
-        });
+        if (sessionStorage.getItem("episodes")) {
+          let episodes = JSON.parse(sessionStorage.getItem("episodes"));
+          if (episodes.indexOf(response.data._id) === -1) {
+            axios.get(`/api/id/${random}`).then(response => {
+              dispatch(getRandomSuccess(response.data));
+            });
+          } else {
+            getRandomForUser(user);
+          }
+          if (episodes.length === 197) {
+            sessionStorage.setItem("episodes", JSON.stringify([]));
+          } else if (episodes.length > 0) {
+            episodes.push(response.data._id);
+            sessionStorage.setItem("episodes", JSON.stringify(episodes));
+          } else if (episodes.length === 0) {
+            episodes = [response.data._id];
+            sessionStorage.setItem("episodes", JSON.stringify(episodes));
+          }
+        } else {
+          episodes = [response.data._id];
+          sessionStorage.setItem("episodes", JSON.stringify(episodes));
+        }
       })
       .catch(e => console.log(e));
   });
@@ -46,6 +65,28 @@ export const getRandom = () => dispatch => {
     return axios
       .get(`/api/${season}/${episode}`)
       .then(response => {
+        if (sessionStorage.getItem("episodes")) {
+          let episodes = JSON.parse(sessionStorage.getItem("episodes"));
+          if (episodes.indexOf(response.data._id) === -1) {
+            axios.get(`/api/id/${random}`).then(response => {
+              dispatch(getRandomSuccess(response.data));
+            });
+          } else {
+            getRandom();
+          }
+          if (episodes.length === 197) {
+            sessionStorage.setItem("episodes", JSON.stringify([]));
+          } else if (episodes.length > 0) {
+            episodes.push(response.data._id);
+            sessionStorage.setItem("episodes", JSON.stringify(episodes));
+          } else if (episodes.length === 0) {
+            episodes = [response.data._id];
+            sessionStorage.setItem("episodes", JSON.stringify(episodes));
+          }
+        } else {
+          episodes = [response.data._id];
+          sessionStorage.setItem("episodes", JSON.stringify(episodes));
+        }
         response.data.season = season;
         dispatch(getRandomSuccess(response.data));
       })

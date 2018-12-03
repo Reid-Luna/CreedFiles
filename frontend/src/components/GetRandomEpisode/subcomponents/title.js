@@ -16,7 +16,6 @@ class TitleComp extends Component {
     this.setState({ expand: !this.state.expand });
   }
   render() {
-    console.log(this.state);
     if (this.state.length <= 16) {
       return <Title isSize={3}>{this.state.title}</Title>;
     } else if (!this.state.expand && this.state.length > 16) {
