@@ -101,7 +101,7 @@ const getSeason = async season => {
 };
 
 const mongoose = require("mongoose");
-const Season = require("../SeasonSchema");
+const Season = require("./SeasonSchema");
 
 const run = async () => {
   mongoose
