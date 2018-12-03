@@ -85,7 +85,12 @@ class GRE extends Component {
     } else {
       this.props.GetEpisode();
     }
-    this.setState({ titleExpand: false, descExpand: false, loaded: false });
+    this.setState({
+      titleExpand: false,
+      descExpand: false,
+      liked: null,
+      loaded: false
+    });
   }
 
   onDecide(e) {
