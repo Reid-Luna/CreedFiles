@@ -28,10 +28,6 @@ class GRE extends Component {
     this.onClick = this.onClick.bind(this);
     this.onDecide = this.onDecide.bind(this);
     this.expand = this.expand.bind(this);
-    this.colors = {
-      creed: "#FE9FBE",
-      deangelo: "#FF2400"
-    };
     this.state = {
       liked: null,
       authenticated: false,
@@ -140,7 +136,11 @@ class GRE extends Component {
                       <Button onClick={this.onClick}>another one</Button>
                     </Column>
                     {this.state.authenticated && (
-                      <Opinion isDislike decide={this.onDecide} />
+                      <Opinion
+                        isDislike
+                        decide={this.onDecide}
+                        isLiked={this.state.liked}
+                      />
                     )}
                   </Columns>
                 </CardContent>

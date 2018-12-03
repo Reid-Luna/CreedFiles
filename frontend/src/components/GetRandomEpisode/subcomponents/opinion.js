@@ -6,7 +6,7 @@ class Opinion extends Component {
   constructor(props) {
     super();
     this.state = {
-      isLiked: undefined
+      isLiked: null
     };
     if (props.isLike !== undefined) {
       this.isLike = true;
