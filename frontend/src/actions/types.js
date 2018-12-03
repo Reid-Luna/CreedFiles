@@ -10,3 +10,4 @@ export const REMOVE = "REMOVE";
 export const LIKE_EPISODE = "LIKE_EPISODE";
 export const DISLIKE_EPISODE = "DISLIKE_EPISODE";
 export const GOT_ERRORS = "GOT_ERRORS";
+export const CLEAR_STATE = "CLEAR_STATE";

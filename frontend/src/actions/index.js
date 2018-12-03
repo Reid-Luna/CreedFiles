@@ -55,7 +55,6 @@ export const getRandom = () => dispatch => {
 
 export const getRandomSuccess = data => {
   const { _id: id, season, number, title, description, image } = data;
-  console.log(data);
   return {
     type: GET_RANDOM_EPISODE,
     payload: {

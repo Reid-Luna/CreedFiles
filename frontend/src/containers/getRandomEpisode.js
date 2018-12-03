@@ -7,6 +7,7 @@ import {
   dislikeEpisode
 } from "../actions";
 import GRE from "../components/GetRandomEpisode";
+import { CLEAR_STATE } from "../actions/types";
 
 const mapStateToProps = state => {
   return {
@@ -33,6 +34,9 @@ const mapDispatchToProps = dispatch => {
     },
     DislikeEpisode: id => {
       dispatch(dislikeEpisode(id));
+    },
+    ClearState: () => {
+      dispatch({ type: CLEAR_STATE });
     }
   };
 };

@@ -12,8 +12,6 @@ const isEmpty = obj => {
 export default function authReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CURRENT_USER:
-      console.log(isEmpty(action.payload));
-      console.log(action.payload);
       return {
         ...state,
         isAuthenticated: isEmpty(action.payload),
