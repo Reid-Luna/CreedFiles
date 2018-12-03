@@ -7,6 +7,10 @@ const SeasonModel = new mongoose.Schema({
   },
   episodes: [
     {
+      season: {
+        type: Number,
+        required: true
+      },
       number: {
         type: Number,
         required: true
