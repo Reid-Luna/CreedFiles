@@ -16,9 +16,6 @@ class Opinion extends Component {
       this.isDislike = true;
       this.isLike = false;
     }
-    if (props.isLiked !== null && props.isLiked !== undefined) {
-      this.state.isLiked = props.isLiked ? true : false;
-    }
     this.onClick = props.decide;
   }
   componentWillReceiveProps(nextProps) {
