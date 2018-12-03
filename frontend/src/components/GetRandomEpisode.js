@@ -80,13 +80,12 @@ class GRE extends Component {
         this.props.DislikeEpisode(this.props.episode.id);
       }
     }
-    this.setState({ liked: null });
     if (this.state.authenticated) {
       this.props.GetRandomForUser(this.props.auth.user);
     } else {
       this.props.GetEpisode();
     }
-    this.setState({ titleExpand: false, descExpand: false });
+    this.setState({ titleExpand: false, descExpand: false, loaded: false });
   }
 
   onDecide(e) {
