@@ -29,7 +29,7 @@ class Description extends Component {
     } else if (!this.state.expand && this.state.length > 100) {
       return (
         <p>
-          {this.state.description.substring(0, 245)}
+          {this.state.description.substring(0, 95)}
           <a onClick={this.Expand}>[...]</a>
         </p>
       );
