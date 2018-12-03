@@ -44,7 +44,12 @@ class Opinion extends Component {
               }}
             />
           ) : (
-            <Icon className="far fa-times-circle" />
+            <Icon
+              className="far fa-times-circle"
+              style={{
+                color: this.state.isLiked === false ? "#FF2400" : null
+              }}
+            />
           )}
         </Button>
       </Column>
