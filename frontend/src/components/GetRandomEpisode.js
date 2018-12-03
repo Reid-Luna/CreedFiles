@@ -145,17 +145,20 @@ class GRE extends Component {
                       Season {this.props.episode.season} Episode{" "}
                       {this.props.episode.number}
                     </Title>
-                    {this.props.episode.description.split("").length <= 250 && (
+                    {this.props.episode.description.split("").length <= 100 && (
                       <p>
-                        {this.props.episode.description +
-                          " ".repeat(
-                            250 -
+                        {this.props.episode.description}
+                        <a style={{ color: "#fff" }}>
+                          {"#".repeat(
+                            100 -
                               this.props.episode.description.split("").length
                           )}
+                          }
+                        </a>
                       </p>
                     )}
                     {!this.state.descExpand &&
-                      this.props.episode.description.split("").length > 250 && (
+                      this.props.episode.description.split("").length > 100 && (
                         <p>
                           {this.props.episode.description.substring(0, 245)}
                           <a id="desc" onClick={this.expand}>
