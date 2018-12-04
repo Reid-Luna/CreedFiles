@@ -2,18 +2,28 @@ const router = require("express").Router();
 const Seasons = require("../models/SeasonSchema");
 
 const getLimit = async season => {
-  season = season ? { season } : {};
   return new Promise((resolve, reject) => {
-    Seasons.find(season)
-      .then(sns => {
-        let count = 0;
-        sns.forEach(sn => {
-          count += sn.episodes[sn.episodes.length - 1].number;
-        });
-        console.log(count);
-        return resolve(count);
-      })
-      .catch(reject);
+    if (season) {
+      Seasons.find(season)
+        .then(sns => {
+          let count = 0;
+          sns.forEach(sn => {
+            count += sn.episodes[sn.episodes.length - 1].number;
+          });
+          return resolve(count);
+        })
+        .catch(reject);
+    } else {
+      Seasons.find({})
+        .then(seasons => {
+          let count = 0;
+          seasons.forEach(season => {
+            count += season.episodes.length;
+          });
+          return resolve(count);
+        })
+        .catch(e => console.log(e));
+    }
   });
 };
 
