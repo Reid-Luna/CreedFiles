@@ -10,43 +10,76 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { RichEmbed } from "discord.js";
 
-export const randomEpisode = () => {
+const total = 186;
+
+export const randomEpisode = user => {
   return new Promise(resolve => {
-    let season = Math.floor(Math.random() * 9) + 1;
     axios
-      .get(`/api/${season}/limit`)
+      .get("/api/id")
       .then(({ data }) => {
-        let episode = Math.floor(Math.random() * data.limit) + 1;
-        return resolve({ season, episode });
+        let episodes = data.ids;
+
+        if (user) {
+          user.dislikedEpisodes.forEach(id => {
+            episodes.splice(episodes.indexOf(id), 1);
+          });
+        }
+
+        if (window.sessionStorage.chosen) {
+          let chosen = JSON.parse(window.sessionStorage.chosen);
+          chosen.forEach(id => {
+            if (episodes.indexOf(id) !== -1) {
+              episodes.splice(episodes.indexOf(id), 1);
+            }
+          });
+        }
+
+        let episode =
+          episodes[Math.floor(Math.random() * (episodes.length - 1)) + 1];
+
+        if (episode) {
+          if (window.sessionStorage.chosen) {
+            let chosen = JSON.parse(window.sessionStorage.chosen);
+            if (user && chosen.length >= total - user.dislikedEpisodes.length) {
+              window.sessionStorage.setItem("chosen", JSON.stringify([]));
+            } else if (!user && chosen.length === total) {
+              window.sessionStorage.setItem("chosen", JSON.stringify([]));
+            }
+
+            chosen.push(episode);
+            window.sessionStorage.setItem("chosen", JSON.stringify(chosen));
+
+            return resolve(episode);
+          } else {
+            window.sessionStorage.setItem("chosen", JSON.stringify([episode]));
+
+            return resolve(episode);
+          }
+        } else {
+          window.sessionStorage.setItem("chosen", JSON.stringify([]));
+          window.location.reload();
+        }
       })
       .catch(e => console.log(e));
   });
 };
 
 export const getRandomForUser = user => dispatch => {
-  randomEpisode().then(({ season, episode }) => {
+  randomEpisode(user).then(id => {
     return axios
-      .get(`/api/id`)
+      .get(`/api/id/${id}`)
       .then(response => {
-        const { ids } = response.data;
-        user.dislikedEpisodes.forEach(id => {
-          ids.splice(ids.indexOf(id), 1);
-        });
-        let random = ids[Math.floor(Math.random() * (ids.length - 1)) + 1];
-        return axios.get(`/api/id/${random}`).then(response => {
-          dispatch(getRandomSuccess(response.data));
-        });
+        dispatch(getRandomSuccess(response.data));
       })
       .catch(e => console.log(e));
   });
 };
 
 export const getRandom = () => dispatch => {
-  randomEpisode().then(({ season, episode }) => {
+  randomEpisode().then(id => {
     return axios
-      .get(`/api/${season}/${episode}`)
+      .get(`/api/id/${id}`)
       .then(response => {
-        response.data.season = season;
         dispatch(getRandomSuccess(response.data));
       })
       .catch(e => console.log(e));

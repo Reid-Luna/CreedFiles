@@ -33,7 +33,8 @@ class GRE extends Component {
       authenticated: false,
       loaded: false,
       titleExpand: false,
-      descExpand: false
+      descExpand: false,
+      initiated: false
     };
   }
 
@@ -41,14 +42,14 @@ class GRE extends Component {
     if (this.props.auth.isAuthenticated !== null) {
       this.setState({ authenticated: this.props.auth.isAuthenticated });
     }
-    if (this.state.authenticated) {
-      this.props.GetRandomForUser(this.props.auth.user);
-    } else {
-      this.props.GetEpisode();
-    }
-    if (this.props.episode.length !== 0) {
-      this.setState({ loaded: true });
-    }
+    // if (this.state.authenticated) {
+    //   this.props.GetRandomForUser(this.props.auth.user);
+    // } else {
+    //   this.props.GetEpisode();
+    // }
+    // if (this.props.episode.length !== 0) {
+    //   this.setState({ loaded: true });
+    // }
     this.props.GetTotal();
   }
 
@@ -59,11 +60,20 @@ class GRE extends Component {
     if (nextProps.episode.length !== 0) {
       this.setState({ loaded: true, titleExpand: false, descExpand: false });
     }
-    if (this.state.authenticated) {
+    if (this.state.authenticated === true) {
       if (
         this.props.auth.user.likedEpisodes.indexOf(nextProps.episode.id) > -1
       ) {
         this.setState({ liked: true });
+      }
+      if (!this.state.initiated) {
+        this.props.GetRandomForUser(this.props.auth.user);
+        this.setState({ initiated: true });
+      }
+    } else if (this.state.authenticated === false) {
+      if (!this.state.initiated) {
+        this.props.GetEpisode();
+        this.setState({ initiated: true });
       }
     }
   }
